@@ -34,10 +34,6 @@
               <input class="wrapper__signup__input" v-model="signupData.email" type="email" />
               <br />
               <br />
-              <label class="wrapper__signup__label">Role: </label>
-              <input class="wrapper__signup__input" v-model="signupData.role" type="text" />
-              <br />
-              <br />
               <label class="wrapper__signup__label">Password: </label>
               <input
                 class="wrapper__signup__input"
@@ -89,7 +85,6 @@ export default {
     const signupData = ref({
       name: '',
       email: '',
-      role: '',
       password: '',
       passwordConfirm: ''
     })
