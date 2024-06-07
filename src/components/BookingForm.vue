@@ -66,16 +66,17 @@ export default {
     tourId: { type: String, default: '' }
   },
   setup() {
+    // Reactive variables for card information, booking status, and message
     const cardInfo = reactive({
       cardNumber: '',
       cardHolder: '',
       expiryDate: '',
       cvv: ''
     })
-
     const bookingStatus = ref(false)
     const bookingMessage = ref('')
 
+    // Function to submit the form
     const submitForm = async () => {
       try {
         const response = await axios.post(
@@ -83,6 +84,7 @@ export default {
           cardInfo
         )
         console.log(response.data)
+        // Set booking message based on response status
         if (response.status === 201) {
           bookingMessage.value = 'Booking Successful! Thanks for your purchase!'
         } else {
@@ -92,6 +94,7 @@ export default {
         console.error('Error submitting form:', error)
         bookingMessage.value = 'Booking Failed'
       }
+      // Set booking status to true
       bookingStatus.value = true
     }
 
@@ -99,6 +102,7 @@ export default {
   }
 }
 </script>
+
 <style lang="scss">
 .booking {
   font-family: sans-serif;

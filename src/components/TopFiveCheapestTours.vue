@@ -51,10 +51,12 @@ export default {
     BookingForm
   },
   setup(props) {
+    // Reactive variables for tours, current page, and selected tour ID
     const tours = ref([])
     const currentPage = ref('tourList')
     const selectedTourId = ref()
 
+    // Function to fetch tours from the server
     async function fetchTours() {
       try {
         const response = await axios.get(
@@ -67,6 +69,7 @@ export default {
       }
     }
 
+    // Function to handle booking a tour
     async function bookTour(tourId) {
       try {
         selectedTourId.value = tourId
@@ -76,6 +79,7 @@ export default {
       }
     }
 
+    // Function to handle deleting a tour
     async function deleteTour(tourId) {
       try {
         await axios.delete(`https://natours-9mok.onrender.com/api/v1/tours/${tourId}`)
@@ -85,6 +89,7 @@ export default {
       }
     }
 
+    // Fetch tours on component mount
     onMounted(() => {
       fetchTours()
     })

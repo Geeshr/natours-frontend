@@ -63,6 +63,7 @@ export default {
     FlatPickr
   },
   setup() {
+    // Reactive variables for date picker configuration, tour data, and success message
     const datePickerConfig = ref({
       enableTime: false,
       dateFormat: 'Y-m-d'
@@ -79,6 +80,8 @@ export default {
       description: ''
     }
     const showSuccessMessage = ref(false)
+
+    // Function to create a new tour
     async function createTour(newTourData) {
       try {
         const response = await axios.post(
@@ -90,12 +93,16 @@ export default {
         console.error('Error creating tour:', error)
       }
     }
+
+    // Reactive variable for storing new tour data
     const newTourData = ref({ ...defaultTourData })
 
+    // Function to submit the form
     async function submitForm() {
       try {
         await createTour(newTourData.value)
 
+        // Reset form data and show success message
         newTourData.value = { ...defaultTourData }
         showSuccessMessage.value = true
         setTimeout(() => {

@@ -75,6 +75,7 @@ export default {
     HomePage
   },
   setup() {
+    // Reactive variables for login and signup data
     const loginData = ref({
       email: '',
       id: '',
@@ -89,10 +90,13 @@ export default {
       passwordConfirm: ''
     })
 
+    // Reactive variable to track login status
     const loggedIn = ref(false)
 
+    // Check token on component mount
     onMounted(checkToken)
 
+    // Function to handle user login
     async function login() {
       try {
         const response = await axios.post(
@@ -100,6 +104,7 @@ export default {
           loginData.value
         )
         if (response.status === 200) {
+          // Update login status and store token in local storage
           loggedIn.value = true
           localStorage.setItem('token', response.data.token)
           console.log('login data', loginData.value)
@@ -109,15 +114,17 @@ export default {
       }
     }
 
+    // Function to handle user signup
     async function signup() {
       try {
         await axios.post('https://natours-9mok.onrender.com/api/v1/users/signup', signupData.value)
-        await login()
+        await login() // Log in automatically after successful signup
       } catch (error) {
         console.error('Sign up error:', error)
       }
     }
 
+    // Function to check if user is already logged in
     function checkToken() {
       const token = localStorage.getItem('token')
       if (token) {
@@ -125,6 +132,7 @@ export default {
       }
     }
 
+    // Function to handle user logout
     function handleLogout() {
       loggedIn.value = false
       localStorage.removeItem('token')

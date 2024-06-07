@@ -46,29 +46,35 @@ export default {
     TopFiveCheapestTours
   },
   setup(props) {
+    // Reactive variables for selected component and back button visibility
     const selectedComponent = ref(null)
     const showBackButton = ref(false)
 
+    // Function to show all tours component
     const showAllTours = () => {
       selectedComponent.value = AllTours
       showBackButton.value = true
     }
 
+    // Function to show create tour component
     const showCreateTour = () => {
       selectedComponent.value = CreateTour
       showBackButton.value = true
     }
 
+    // Function to show top five cheapest tours component
     const showTopFiveCheap = () => {
       selectedComponent.value = TopFiveCheapestTours
       showBackButton.value = true
     }
 
+    // Function to navigate to the home page
     const goToHome = () => {
       selectedComponent.value = null
       showBackButton.value = false
     }
 
+    // Function to handle logout
     const logout = async () => {
       try {
         await axios.get('https://natours-9mok.onrender.com/api/v1/users/logout')
