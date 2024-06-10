@@ -6,9 +6,8 @@
       <div class="tour__container" v-for="(tour, idx) in tours" :key="idx">
         <p class="tour__container__tour-title">{{ tour.name }}!</p>
         <div class="tour__container__description">
-          <span class="tour__container__description__text">
-            Description: {{ tour.description }}
-          </span>
+          <span class="tour__container__description__title"> Summary: </span>
+          <span class="tour__container__description__text"> {{ tour.summary }} </span>
         </div>
         <div class="tour__container__info">
           <span class="tour__container__info__text"> Duration: {{ tour.duration }} days</span>
@@ -128,6 +127,12 @@ export default {
     }
     &__description {
       padding: 15px;
+      &__title {
+        font-weight: bold;
+        display: flex;
+        justify-content: center;
+        text-transform: capitalize;
+      }
       &__text {
         display: flex;
         justify-content: center;
