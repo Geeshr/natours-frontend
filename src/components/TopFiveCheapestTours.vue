@@ -4,7 +4,6 @@
       <p>Top 5 cheapest tours!</p>
 
       <div class="tour__container" v-for="(tour, idx) in tours" :key="idx">
-        {{ console.log('tour', tour) }}
         <p class="tour__container__tour-title">{{ tour.name }}!</p>
         <div class="tour__container__description">
           <span class="tour__container__description__text">
@@ -50,7 +49,7 @@ export default {
   components: {
     BookingForm
   },
-  setup(props) {
+  setup() {
     // Reactive variables for tours, current page, and selected tour ID
     const tours = ref([])
     const currentPage = ref('tourList')
@@ -63,7 +62,6 @@ export default {
           'https://natours-9mok.onrender.com/api/v1/tours/top-5-cheap'
         )
         tours.value = response.data
-        console.log('tours', tours.value)
       } catch (error) {
         console.error('Error fetching tours:', error)
       }

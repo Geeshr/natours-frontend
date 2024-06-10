@@ -107,7 +107,6 @@ export default {
           // Update login status and store token in local storage
           loggedIn.value = true
           localStorage.setItem('token', response.data.token)
-          console.log('login data', loginData.value)
         }
       } catch (error) {
         console.error('Login error:', error)

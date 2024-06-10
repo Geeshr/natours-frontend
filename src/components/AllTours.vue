@@ -4,7 +4,6 @@
       <p>All available tours</p>
 
       <div class="tour__container" v-for="(tour, idx) in tours" :key="idx">
-        {{ console.log('tour', tour) }}
         <p class="tour__container__tour-title">{{ tour.name }}!</p>
         <div class="tour__container__description">
           <span class="tour__container__description__text">
@@ -12,7 +11,9 @@
           </span>
         </div>
         <div class="tour__container__info">
-          <span class="tour__container__info__text"> Duration: {{ tour.duration }} days</span>
+          <span class="tour__container__info__text">
+            Dates: {{ formatDate(tour.startDate) }} - {{ formatDate(tour.endDate) }}</span
+          >
 
           <span class="tour__container__info__text">Price: ${{ tour.price }}</span>
           <span class="tour__container__info__text"> Group size: {{ tour.maxGroupSize }}</span>
@@ -46,7 +47,7 @@ export default {
   components: {
     BookingForm
   },
-  setup(props) {
+  setup() {
     // Reactive variables for tours, current page, and selected tour ID
     const tours = ref([])
     const currentPage = ref('tourList')
@@ -57,7 +58,6 @@ export default {
       try {
         const response = await axios.get('https://natours-9mok.onrender.com/api/v1/tours')
         tours.value = response.data
-        console.log('tours', tours.value)
       } catch (error) {
         console.error('Error fetching tours:', error)
       }
@@ -82,7 +82,28 @@ export default {
         console.error('Error booking tour:', error)
       }
     }
-    console.log('props.user id', props.userData)
+    // Date formatting function
+    function formatDate(dateStr) {
+      const date = new Date(dateStr)
+      const day = String(date.getDate()).padStart(2, '0')
+      const monthNames = [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December'
+      ]
+      const month = monthNames[date.getMonth()]
+      const year = date.getFullYear()
+      return `${day} ${month} ${year}`
+    }
 
     // Fetch tours when component is mounted
     onMounted(() => {
@@ -91,6 +112,7 @@ export default {
 
     // Return reactive variables and functions
     return {
+      formatDate,
       tours,
       currentPage,
       bookTour,
@@ -116,7 +138,7 @@ export default {
     -webkit-box-shadow: 10px 10px 20px 5px lightgray;
     -moz-box-shadow: 10px 10px 20px 5px lightgray;
     box-shadow: 10px 10px 20px 5px lightgray;
-    width: 70%;
+    width: 40%;
     height: auto;
     &__tour-title {
       display: flex;

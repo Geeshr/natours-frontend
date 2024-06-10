@@ -83,7 +83,6 @@ export default {
           `https://natours-9mok.onrender.com/api/v1/bookings`,
           cardInfo
         )
-        console.log(response.data)
         // Set booking message based on response status
         if (response.status === 201) {
           bookingMessage.value = 'Booking Successful! Thanks for your purchase!'
