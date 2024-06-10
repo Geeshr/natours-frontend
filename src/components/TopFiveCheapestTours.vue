@@ -117,7 +117,7 @@ export default {
     -webkit-box-shadow: 10px 10px 20px 5px lightgray;
     -moz-box-shadow: 10px 10px 20px 5px lightgray;
     box-shadow: 10px 10px 20px 5px lightgray;
-    width: 70%;
+    width: 40%;
     height: auto;
     &__tour-title {
       display: flex;
