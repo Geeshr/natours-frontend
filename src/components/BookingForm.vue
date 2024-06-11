@@ -42,13 +42,7 @@
       <br />
       <div>
         <label for="cvv">CVV: </label>
-        <input
-          class="booking__form__input"
-          type="text"
-          id="cvv"
-          v-model="cardInfo.cvv"
-          required
-        />
+        <input class="booking__form__input" type="text" id="cvv" v-model="cardInfo.cvv" required />
       </div>
       <br />
       <br />
@@ -64,49 +58,50 @@
 </template>
 
 <script>
-
-
-import { ref, reactive } from "vue";
-import axios from "axios";
+import { ref, reactive } from 'vue'
+import axios from 'axios'
 
 export default {
   props: {
-    tourId: { type: String, default: "" },
+    tourId: { type: String, default: '' }
   },
-  setup(props) {
+  setup() {
+    // Reactive variables for card information, booking status, and message
     const cardInfo = reactive({
-      cardNumber: "",
-      cardHolder: "",
-      expiryDate: "",
-      cvv: "",
-    });
+      cardNumber: '',
+      cardHolder: '',
+      expiryDate: '',
+      cvv: ''
+    })
+    const bookingStatus = ref(false)
+    const bookingMessage = ref('')
 
-    const bookingStatus = ref(false);
-    const bookingMessage = ref("");
-
+    // Function to submit the form
     const submitForm = async () => {
       try {
         const response = await axios.post(
           `https://natours-9mok.onrender.com/api/v1/bookings`,
           cardInfo
-        );
-        console.log(response.data);
+        )
+        // Set booking message based on response status
         if (response.status === 201) {
-          bookingMessage.value = "Booking Successful! Thanks for your purchase!";
+          bookingMessage.value = 'Booking Successful! Thanks for your purchase!'
         } else {
-          bookingMessage.value = "Booking Failed";
+          bookingMessage.value = 'Booking Failed'
         }
       } catch (error) {
-        console.error("Error submitting form:", error);
-        bookingMessage.value = "Booking Failed";
+        console.error('Error submitting form:', error)
+        bookingMessage.value = 'Booking Failed'
       }
-      bookingStatus.value = true;
-    };
+      // Set booking status to true
+      bookingStatus.value = true
+    }
 
-    return { cardInfo, submitForm, bookingStatus, bookingMessage };
-  },
-};
+    return { cardInfo, submitForm, bookingStatus, bookingMessage }
+  }
+}
 </script>
+
 <style lang="scss">
 .booking {
   font-family: sans-serif;
@@ -148,6 +143,10 @@ export default {
       border: 1px solid lightgrey;
       background-color: lightgray;
       border-radius: 5px;
+      &:hover {
+        background-color: black;
+        color: white;
+      }
     }
   }
 }

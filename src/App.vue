@@ -10,54 +10,28 @@
               <br />
               <br />
               <label class="wrapper__login__label">Email</label>
-              <input
-                class="wrapper__login__input"
-                v-model="loginData.email"
-                type="email"
-              />
+              <input class="wrapper__login__input" v-model="loginData.email" type="email" />
               <br />
               <br />
               <label class="wrapper__login__label">Password</label>
-              <input
-                class="wrapper__login__input"
-                v-model="loginData.password"
-                type="password"
-              />
+              <input class="wrapper__login__input" v-model="loginData.password" type="password" />
               <br />
               <br />
             </div>
 
             <div class="wrapper__button-container">
-              <button class="wrapper__button-container__login" type="submit">
-                login
-              </button>
+              <button class="wrapper__button-container__login" type="submit">login</button>
             </div>
           </form>
 
           <form class="wrapper__signup" @submit.prevent="signup">
             <div class="wrapper__signup__container">
               <label class="wrapper__signup__label">Name: </label>
-              <input
-                class="wrapper__signup__input"
-                v-model="signupData.name"
-                type="text"
-              />
+              <input class="wrapper__signup__input" v-model="signupData.name" type="text" />
               <br />
               <br />
               <label class="wrapper__signup__label">Email: </label>
-              <input
-                class="wrapper__signup__input"
-                v-model="signupData.email"
-                type="email"
-              />
-              <br />
-              <br />
-              <label class="wrapper__signup__label">Role: </label>
-              <input
-                class="wrapper__signup__input"
-                v-model="signupData.role"
-                type="text"
-              />
+              <input class="wrapper__signup__input" v-model="signupData.email" type="email" />
               <br />
               <br />
               <label class="wrapper__signup__label">Password: </label>
@@ -68,7 +42,7 @@
               />
               <br />
               <br />
-              <label class="wrapper__signup__label">Password Confirm :</label>
+              <label class="wrapper__signup__label">Confirm Password:</label>
               <input
                 class="wrapper__signup__input"
                 v-model="signupData.passwordConfirm"
@@ -79,9 +53,7 @@
             <br />
             <br />
             <div class="wrapper__button-container">
-              <button class="wrapper__button-container__signup" type="submit">
-                sign up
-              </button>
+              <button class="wrapper__button-container__signup" type="submit">sign up</button>
             </div>
           </form>
         </template>
@@ -94,75 +66,80 @@
 </template>
 
 <script>
-
-import axios from "axios";
-import { ref, onMounted } from "vue";
-import HomePage from "./components/HomePage.vue";
+import axios from 'axios'
+import { ref, onMounted } from 'vue'
+import HomePage from './components/HomePage.vue'
 
 export default {
   components: {
-    HomePage,
+    HomePage
   },
   setup() {
+    // Reactive variables for login and signup data
     const loginData = ref({
-      email: "",
-      id: "",
-      name: "",
-      password: "",
-    });
+      email: '',
+      id: '',
+      name: '',
+      password: ''
+    })
 
     const signupData = ref({
-      name: "",
-      email: "",
-      role: "",
-      password: "",
-      passwordConfirm: "",
-    });
+      name: '',
+      email: '',
+      password: '',
+      passwordConfirm: ''
+    })
 
-    const loggedIn = ref(false);
+    // Reactive variable to track login status
+    const loggedIn = ref(false)
 
-    onMounted(checkToken);
+    // Check token on component mount
+    onMounted(checkToken)
 
+    // Function to handle user login
     async function login() {
       try {
         const response = await axios.post(
-          "https://natours-9mok.onrender.com/api/v1/users/login",
+          'https://natours-9mok.onrender.com/api/v1/users/login',
           loginData.value
-        );
+        )
         if (response.status === 200) {
-          loggedIn.value = true;
-          localStorage.setItem("token", response.data.token);
-          console.log("login data", loginData.value);
+          // Update login status and store token in local storage
+          loggedIn.value = true
+          localStorage.setItem('token', response.data.token)
         }
       } catch (error) {
-        console.error("Login error:", error);
+        console.error('Login error:', error)
       }
     }
 
+    // Function to handle user signup
     async function signup() {
       try {
-        await axios.post("https://natours-9mok.onrender.com/api/v1/users/signup", signupData.value);
-        await login();
+        await axios.post('https://natours-9mok.onrender.com/api/v1/users/signup', signupData.value)
+        await login() // Log in automatically after successful signup
       } catch (error) {
-        console.error("Sign up error:", error);
+        console.error('Sign up error:', error)
       }
     }
 
+    // Function to check if user is already logged in
     function checkToken() {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem('token')
       if (token) {
-        loggedIn.value = true;
+        loggedIn.value = true
       }
     }
 
+    // Function to handle user logout
     function handleLogout() {
-      loggedIn.value = false;
-      localStorage.removeItem("token");
+      loggedIn.value = false
+      localStorage.removeItem('token')
     }
 
-    return { loginData, signupData, loggedIn, login, signup, handleLogout };
-  },
-};
+    return { loginData, signupData, loggedIn, login, signup, handleLogout }
+  }
+}
 </script>
 
 <style lang="scss">
@@ -244,6 +221,11 @@ export default {
       border-radius: 5px;
       position: relative;
       top: 40px;
+
+      &:hover {
+        background-color: black;
+        color: white;
+      }
     }
     &__signup {
       width: 40%;
@@ -251,6 +233,10 @@ export default {
       border: 1px solid lightgrey;
       background-color: lightgray;
       border-radius: 5px;
+      &:hover {
+        background-color: black;
+        color: white;
+      }
     }
   }
 }

@@ -4,17 +4,13 @@
       <p>Top 5 cheapest tours!</p>
 
       <div class="tour__container" v-for="(tour, idx) in tours" :key="idx">
-        {{ console.log("tour", tour) }}
         <p class="tour__container__tour-title">{{ tour.name }}!</p>
         <div class="tour__container__description">
-          <span class="tour__container__description__text">
-            Description: {{ tour.description }}
-          </span>
+          <span class="tour__container__description__title"> Summary: </span>
+          <span class="tour__container__description__text"> {{ tour.summary }} </span>
         </div>
         <div class="tour__container__info">
-          <span class="tour__container__info__text">
-            Duration: {{ tour.duration }} days</span
-          >
+          <span class="tour__container__info__text"> Duration: {{ tour.duration }} days</span>
 
           <span class="tour__container__info__text">Price: ${{ tour.price }}</span>
           <span class="tour__container__info__text">
@@ -24,75 +20,85 @@
             Ratings:
             {{ tour.ratingsAverage }}
           </span>
-          <span class="tour__container__info__text">
-            Group size: {{ tour.maxGroupSize }}</span
-          >
-          <span class="tour__container__info__text">
-            Difficulty: {{ tour.difficulty }}</span
-          >
+          <span class="tour__container__info__text"> Group size: {{ tour.maxGroupSize }}</span>
+          <span class="tour__container__info__text"> Difficulty: {{ tour.difficulty }}</span>
         </div>
         <div class="tour__container__book-tour">
           <button class="tour__container__book-tour__button" @click="bookTour(tour.id)">
             Book tour!
+          </button>
+          <button class="tour__container__book-tour__button" @click="deleteTour(tour.id)">
+            Delete tour!
           </button>
         </div>
       </div>
     </div>
   </div>
   <div v-else-if="currentPage === 'bookingForm'">
-    <!-- Render your booking form component here -->
     <BookingForm :tourId="selectedTourId" />
   </div>
 </template>
 
 <script>
-
-import axios from "axios";
-import { onMounted, ref } from "vue";
-import BookingForm from "./BookingForm.vue";
+import axios from 'axios'
+import { onMounted, ref } from 'vue'
+import BookingForm from './BookingForm.vue'
 
 export default {
   components: {
-    BookingForm,
+    BookingForm
   },
-  setup(props) {
-    const tours = ref([]);
-    const currentPage = ref("tourList");
-    const selectedTourId = ref();
+  setup() {
+    // Reactive variables for tours, current page, and selected tour ID
+    const tours = ref([])
+    const currentPage = ref('tourList')
+    const selectedTourId = ref()
 
+    // Function to fetch tours from the server
     async function fetchTours() {
       try {
         const response = await axios.get(
-          "https://natours-9mok.onrender.com/api/v1/tours/top-5-cheap"
-        );
-        tours.value = response.data;
-        console.log("tours", tours.value);
+          'https://natours-9mok.onrender.com/api/v1/tours/top-5-cheap'
+        )
+        tours.value = response.data
       } catch (error) {
-        console.error("Error fetching tours:", error);
+        console.error('Error fetching tours:', error)
       }
     }
 
+    // Function to handle booking a tour
     async function bookTour(tourId) {
       try {
-        // You can pass the tourId to the booking form component
-        selectedTourId.value = tourId;
-        currentPage.value = "bookingForm"; // Change the current page
+        selectedTourId.value = tourId
+        currentPage.value = 'bookingForm'
       } catch (error) {
-        console.error("Error booking tour:", error);
+        console.error('Error booking tour:', error)
       }
     }
 
+    // Function to handle deleting a tour
+    async function deleteTour(tourId) {
+      try {
+        await axios.delete(`https://natours-9mok.onrender.com/api/v1/tours/${tourId}`)
+        await fetchTours()
+      } catch (error) {
+        console.error('Error deleting tour:', error)
+      }
+    }
+
+    // Fetch tours on component mount
     onMounted(() => {
-      fetchTours();
-    });
+      fetchTours()
+    })
     return {
       tours,
       bookTour,
       currentPage,
       selectedTourId,
-    };
-  },
-};
+      deleteTour
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -104,18 +110,14 @@ export default {
   flex-direction: column;
   align-items: center;
   &__container {
-    // border: 1px solid black;
     border-radius: 15px;
 
     margin-top: 20px;
     -webkit-box-shadow: 10px 10px 20px 5px lightgray;
     -moz-box-shadow: 10px 10px 20px 5px lightgray;
     box-shadow: 10px 10px 20px 5px lightgray;
-    width: 70%;
+    width: 40%;
     height: auto;
-    // display: flex;
-    // justify-content: center;
-    // align-items: center;
     &__tour-title {
       display: flex;
       justify-content: center;
@@ -125,6 +127,12 @@ export default {
     }
     &__description {
       padding: 15px;
+      &__title {
+        font-weight: bold;
+        display: flex;
+        justify-content: center;
+        text-transform: capitalize;
+      }
       &__text {
         display: flex;
         justify-content: center;
@@ -134,8 +142,8 @@ export default {
     }
     &__info {
       display: flex;
-      /* justify-content: center; */
       flex-direction: column;
+      padding-bottom: 10px;
       &__text {
         display: flex;
         justify-content: center;
@@ -145,6 +153,9 @@ export default {
       display: flex;
       justify-content: center;
       padding: 10px;
+      border: 1px solid lightgray;
+      border-radius: 0px 0px 12px 12px;
+      background: lightgrey;
       &__button {
         background: none;
         border: none;
